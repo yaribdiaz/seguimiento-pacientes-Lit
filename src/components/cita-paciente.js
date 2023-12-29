@@ -3,8 +3,8 @@ import {map} from 'lit/directives/map.js';
 
 export class CitaPaciente extends LitElement {
     static properties = {
-        pacientes: { type: Array },
-    };
+        pacientes: { type: Array }
+    }
 
     static styles = css `
         p {
@@ -33,17 +33,17 @@ export class CitaPaciente extends LitElement {
         .paciente {
             box-shadow: 5px 5px 5px gray;
             border-radius: 10px;
+            padding: 40px 10px;
         }
     `;
 
     constructor(){
         super();
-        this.pacientes = [{nombre: "Doug", propietario: "Adonis", email: "ad@gmail.com", fecha: "29/02/2024", sintomas: "Hace esto y olo otro", id: 1}, {nombre: "Champi", propietario: "Adonis", email: "ad@gmail.com", fecha: "29/02/2024", sintomas: "Hace esto y olo otro", id: 2}];
+        this.pacientes = [];
     }
 
     render(){
         return html `
-        <p>pacientes</p>
         ${map(this.pacientes, (paciente) => html `<div class="paciente">
             
         <p>Nombre: 
@@ -87,7 +87,9 @@ export class CitaPaciente extends LitElement {
 
         </div>
 
- </div>`)}
+        </div>`,
+        (paciente) => paciente.id
+ )}
         
         `
 
@@ -100,7 +102,11 @@ deletePaciente(id){
 }
 
 setPaciente(id){
-    console.log(this.pacientes.find((p) => p.id === id));
+    this.dispatchEvent(new CustomEvent('editar-datos', {
+        bubbles: true,
+        composed: true,
+        detail: this.pacientes.find((p) => p.id === id)
+    }));
 }
 
 
