@@ -24,6 +24,7 @@ class FormComponent extends LitElement {
     `;
 
     static properties = {
+        textoBoton: {},
         mascota: {},
         error: {}
     };
@@ -32,6 +33,7 @@ class FormComponent extends LitElement {
         super();
         this.mascota = {nombre:'', propietario:'', email:'', fecha: '', sintomas: ''};
         this.error = false;
+        this.textoBoton = "Enviar";
     }
 
     render() {
@@ -99,7 +101,7 @@ class FormComponent extends LitElement {
     
             <button type="button"
             @click=${() => {this.setMascota(this.mascota); this.mascota = {nombre:'', propietario:'', email:'', fecha: '', sintomas: ''}}} 
-            >Enviar</button>           
+            >${this.textoBoton}</button>           
             
         </form>
     

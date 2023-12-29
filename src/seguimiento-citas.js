@@ -40,7 +40,7 @@ export class SeguimientoCitas extends LitElement{
         return html `
         <div class="seguimiento">
         <div>
-        <form-component .mascota=${this.mascota}></form-component>
+        <form-component .textoBoton=${this.banderaEditar ? "Editar" : "Enviar"} .mascota=${this.mascota}></form-component>
         </div>
         <div>
         <cita-paciente .pacientes=${this.pacientes}></cita-paciente>
@@ -68,6 +68,7 @@ export class SeguimientoCitas extends LitElement{
                 .catch(error => console.log('error', error));
             this.getData();
             this.banderaEditar = false;
+            this.mascota = {nombre:'', propietario:'', email:'', fecha: '', sintomas: ''};
 
 
         } else {
