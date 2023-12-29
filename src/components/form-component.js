@@ -1,5 +1,7 @@
-import { LitElement, css, html } from "lit";
+import { LitElement, css, html, nothing } from "lit";
 import "./error-component";
+import {when} from 'lit/directives/when.js';
+
 
 class FormComponent extends LitElement {
     static styles = css`
@@ -13,19 +15,101 @@ class FormComponent extends LitElement {
     `;
 
     static properties = {
-        form: { type: String },
+        mascota: {},
+        error: {}
     };
 
     constructor() {
         super();
-        this.form = "Soy el Form";
+        this.mascota = {nombre:'', propietario:'', email:'', fecha: '', sintomas: ''};
+        this.error = false;
     }
 
     render() {
         return html`
-            <h1>${this.form}</h1>
-            <error-component></error-component>
+        <div className="md:w-1/2 lg:w-2/5 mx-5">
+
+        <h2 className="font-black text-2xl text-center">Seguimiento Pacientes</h2>
+    
+        <p className="text-lg mt-5 text-center mb-10">
+            Añade Pacientes y
+            <span className="text-indigo-600 font-bold">Administralos</span>
+        </p>
+    
+        <form
+            onSubmit={handleSubmit} 
+            className="bg-white shadow-md rounded-xl py-10 px-5">
+    
+            ${when(this.error, () => html `<error-component mensaje='Todos los campos son obligatorios' />`, () =>nothing)}
+    
+            <div className="mb-5">
+                <label htmlFor="mascota" className="block text-gray-700 uppercase font-bold">
+                    Nombre Mascota </label>
+                <input id="mascota" type="text" placeholder="Nombre de Mascota"
+                .value=${this.mascota.nombre}
+                @input=${(e) => this.handleFieldChange(e, 'nombre')}
+                />
+            </div>
+     
+            <div  className="mb-5">
+                <label htmlFor="propietario" className="block text-gray-700 uppercase font-bold">
+                    Nombre Propietario</label>
+                <input id="propietario" type="text" placeholder="Nombre del Propietario"
+                .value=${this.mascota.propietario} 
+                @input=${(e) => this.handleFieldChange(e, 'propietario')}
+                />
+            </div>
+    
+            <div  className="mb-5">
+                <label htmlFor="email" className="block text-gray-700 uppercase font-bold">
+                    Email</label>
+                <input id="email" type="email" placeholder="Email Contacto Propietario" 
+                @input=${(e) => this.handleFieldChange(e, 'email')}
+                .value=${this.mascota.email} 
+                />
+            </div>
+    
+            <div  className="mb-5">
+                <label htmlFor="alta" className="block text-gray-700 uppercase font-bold">
+                    Alta</label>
+                <input id="alta" type="date" 
+                .value=${this.mascota.fecha} 
+                @input=${(e) => this.handleFieldChange(e, 'fecha')}
+                />
+            </div>
+    
+            <div  className="mb-5">
+                <label htmlFor="sintomas" className="block text-gray-700 uppercase font-bold">
+                    Sintomas</label>
+                <textarea className="border-2 w-full mt-2 p-1 rounded-md" id="sintomas" cols="30" rows="4" 
+                placeholder="Describe los Síntomas"
+                .value=${this.mascota.sintomas} 
+                @input=${(e) => this.handleFieldChange(e, 'sintomas')}
+
+                ></textarea>
+            </div>
+    
+            <button type="button"
+            @click=${() => {this.setMascota(this.mascota); this.mascota = {nombre:'', propietario:'', email:'', fecha: '', sintomas: ''}}} 
+            >Enviar</button>           
+            
+        </form>
+    
+        </div>
         `;
+    }
+
+    handleFieldChange(event, field) {
+        this.mascota = { ...this.mascota, [field]: event.target.value };
+      }
+
+    setMascota(mascota){
+        console.log(mascota);
+        this.dispatchEvent(new CustomEvent('datos-actualizados', {
+            bubbles: true,
+            composed: true,
+            detail: mascota
+        }));
     }
 }
 

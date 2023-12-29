@@ -3,7 +3,7 @@ import {map} from 'lit/directives/map.js';
 
 export class CitaPaciente extends LitElement {
     static properties = {
-        pacientes: {}
+        pacientes: { type: Array },
     };
 
     static styles = css `
@@ -40,8 +40,6 @@ export class CitaPaciente extends LitElement {
         super();
         this.pacientes = [{nombre: "Doug", propietario: "Adonis", email: "ad@gmail.com", fecha: "29/02/2024", sintomas: "Hace esto y olo otro", id: 1}, {nombre: "Champi", propietario: "Adonis", email: "ad@gmail.com", fecha: "29/02/2024", sintomas: "Hace esto y olo otro", id: 2}];
     }
-
-    
 
     render(){
         return html `
