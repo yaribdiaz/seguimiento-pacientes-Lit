@@ -11,13 +11,15 @@ export class SeguimientoCitas extends LitElement{
         }
     `
 
+    banderaEditar = false;
+
     static properties = {
         pacientes: {}
     }
 
     constructor(){
         super();
-        this.pacientes = [{nombre: "Doug", propietario: "Miriam", email: "ad@gmail.com", fecha: "29/02/2024", sintomas: "Hace esto y olo otro", id: 1}, {nombre: "Champi", propietario: "Miriam", email: "ad@gmail.com", fecha: "29/02/2024", sintomas: "Hace esto y olo otro", id: 2}];
+        this.getData();
         this.mascota = {nombre:'', propietario:'', email:'', fecha: '', sintomas: ''};
     }
 
@@ -34,6 +36,7 @@ export class SeguimientoCitas extends LitElement{
     }
 
     render(){
+        console.log("Renderizado de seguimiento de citas");
         return html `
         <div class="seguimiento">
         <div>
@@ -46,15 +49,58 @@ export class SeguimientoCitas extends LitElement{
         `;
     }
 
-    handleDatosActualizados(event){
-        const datos  = event.detail;
-        this.pacientes = [...this.pacientes, datos];
-        this.requestUpdate();
+    async handleDatosActualizados(event){
+        if (this.banderaEditar){
+            const datos = event.detail;
+            const body = JSON.stringify(datos);
+
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+
+            var requestOptions = {
+                method: 'PUT',
+                body: body,
+                headers: myHeaders
+            };
+
+            await fetch(`http://localhost:8080/api-citas/${datos.id}`, requestOptions)
+                .then(response => response.json())
+                .catch(error => console.log('error', error));
+            this.getData();
+            this.banderaEditar = false;
+
+
+        } else {
+            const datos = event.detail;
+            const body = JSON.stringify(datos);
+
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+
+            var requestOptions = {
+                method: 'POST',
+                body: body,
+                headers: myHeaders
+            };
+
+            await fetch("http://localhost:8080/api-citas", requestOptions)
+                .then(response => response.json())
+                .catch(error => console.log('error', error));
+            this.getData();
+        }
+    }
+
+    async getData(){
+        const result = await fetch("http://localhost:8080/api-citas", {method: 'GET'})
+        .then(response => response.json())
+        .catch(error => console.log('error', error));
+        this.pacientes = [...result];
     }
 
     handleSetData(event){
         const datos = event.detail;
         this.mascota = {...datos};
+        this.banderaEditar = true;
         this.requestUpdate();
     }
 }

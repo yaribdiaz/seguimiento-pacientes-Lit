@@ -43,6 +43,7 @@ export class CitaPaciente extends LitElement {
     }
 
     render(){
+        console.log("renderizado cita-paciente");
         return html `
         ${map(this.pacientes, (paciente) => html `<div class="paciente">
             
@@ -92,13 +93,19 @@ export class CitaPaciente extends LitElement {
  )}
         
         `
-
-
 }
 
-deletePaciente(id){
-    this.pacientes = this.pacientes.filter((p) => p.id !== id);
-    this.requestUpdate();
+async deletePaciente(id){
+
+    await fetch(`http://localhost:8080/api-citas/${id}`, {
+        method: 'DELETE',
+    })
+        .then(response => response.json())
+        .catch(error => console.log('error', error));
+
+    this.pacientes = await fetch("http://localhost:8080/api-citas", {method: 'GET'})
+    .then(response => response.json())
+    .catch(error => console.log('error', error));
 }
 
 setPaciente(id){
