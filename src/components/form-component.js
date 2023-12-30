@@ -1,136 +1,178 @@
 import { LitElement, css, html, nothing } from "lit";
 import "./error-component";
-import {when} from 'lit/directives/when.js';
-
+import { when } from "lit/directives/when.js";
 
 class FormComponent extends LitElement {
-    static styles = css`
-        h1 {
-            color: blue;
-        }
-
-        .input {
-            display: block;
-            font-weight: bold;
-        }
-
-        .form-title {
-            margin: 5px 0 10px 0;
-        }
-
-        .form-input {
-            margin-bottom: 10px;
-        }
-    `;
-
-    static properties = {
-        textoBoton: {},
-        mascota: {},
-        error: {}
-    };
-
-    constructor() {
-        super();
-        this.mascota = {nombre:'', propietario:'', email:'', fecha: '', sintomas: ''};
-        this.error = false;
-        this.textoBoton = "Enviar";
+  static styles = css`
+    :host {
+      display: block;
     }
 
-    render() {
-        return html`
-        <div className="md:w-1/2 lg:w-2/5 mx-5">
+    h2 {
+      font-weight: bold;
+      font-size: 1.5rem;
+      text-align: center;
+    }
 
-        <h2 className="font-black text-2xl text-center">Seguimiento Pacientes</h2>
-    
-        <p className="text-lg mt-5 text-center mb-10" class="form-title">
-            Añade Pacientes y
-            <span className="text-indigo-600 font-bold">Administralos</span>
-        </p>
-    
-        <form
-            className="bg-white shadow-md rounded-xl py-10 px-5">
-    
-            ${when(this.error, () => html `<error-component mensaje='Todos los campos son obligatorios' />`, () =>nothing)}
-    
-            <div className="mb-5" class="form-input">
-                <label htmlFor="mascota" class="input" className="block text-gray-700 uppercase font-bold">
-                    Nombre Mascota </label>
-                <input id="mascota" type="text" placeholder="Nombre de Mascota"
-                .value=${this.mascota.nombre}
-                @input=${(e) => this.handleFieldChange(e, 'nombre')}
-                />
-            </div>
-     
-            <div  className="mb-5" class="form-input">
-                <label htmlFor="propietario" class="input" className="block text-gray-700 uppercase font-bold">
-                    Nombre Propietario</label>
-                <input id="propietario" type="text" placeholder="Nombre del Propietario"
-                .value=${this.mascota.propietario} 
-                @input=${(e) => this.handleFieldChange(e, 'propietario')}
-                />
-            </div>
-    
-            <div  className="mb-5" class="form-input">
-                <label htmlFor="email" class="input" className="block text-gray-700 uppercase font-bold">
-                    Email</label>
-                <input id="email" type="email" placeholder="Email Contacto Propietario" 
-                @input=${(e) => this.handleFieldChange(e, 'email')}
-                .value=${this.mascota.email} 
-                />
-            </div>
-    
-            <div  className="mb-5" class="form-input">
-                <label htmlFor="alta" class="input" className="block text-gray-700 uppercase font-bold">
-                    Alta</label>
-                <input id="alta" type="date" 
-                .value=${this.mascota.fecha} 
-                @input=${(e) => this.handleFieldChange(e, 'fecha')}
-                />
-            </div>
-    
-            <div className="mb-5" class="form-input">
-                <label htmlFor="sintomas" class="input" className="block text-gray-700 uppercase font-bold">
-                    Sintomas</label>
-                <textarea className="border-2 w-full mt-2 p-1 rounded-md" id="sintomas" cols="30" rows="4" 
-                placeholder="Describe los Síntomas"
-                .value=${this.mascota.sintomas} 
-                @input=${(e) => this.handleFieldChange(e, 'sintomas')}
+    p {
+      color: #4f46e5;
+      font-weight: bold;
+      font-size: large;
+    }
 
-                ></textarea>
-            </div>
-    
-            <button type="button"
-            @click=${() => {this.setMascota(this.mascota); this.mascota = {nombre:'', propietario:'', email:'', fecha: '', sintomas: ''}}} 
-            >${this.textoBoton}</button>           
-            
+    form {
+        background-color: white;
+   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+   border-radius: 1.5rem;
+   padding-top: 2.5rem;
+   padding-left: 1.25rem;
+   padding-right: 1.25rem;
+    }
+
+    div {
+        margin-bottom: 1em;
+    }
+
+    label {
+        color: #4a5568;
+   text-transform: uppercase;
+   font-weight: bold;
+
+    }
+    textarea,
+    input {
+        border: 2px solid;
+   width: 100%;
+   margin-top: 0.5rem;
+   padding: 0.25rem;
+   border-radius: 0.375rem;
+    }
+    input::placeholder {
+   color: #cbd5e0;
+    }
+
+    button {
+   background-color: #4f46e5; 
+   width: 100%;
+   color: white;
+   padding: 0.75rem; 
+   border-radius: 0.375rem; 
+   text-transform: uppercase;
+   cursor: pointer;
+   transition: all 0.3s; 
+}
+
+
+button:hover {
+   background-color: #4338ca;
+}
+
+  `;
+
+  static properties = {
+    mascota: {},
+    error: { type: Boolean },
+  };
+
+  constructor() {
+    super();
+    this.mascota = { nombre: "", propietario: "", email: "", fecha: "", sintomas: "" };
+    this.error = false;
+  }
+
+  render() {
+    return html`
+      <div>
+        <h2>Seguimiento Pacientes</h2>
+        <p>Añade Pacientes y Adminístralos</p>
+        <form>
+          ${when(
+            this.error,
+            () => html`<error-component mensaje="Todos los campos son obligatorios" />`,
+            () => nothing
+          )}
+          <div>
+            <label htmlFor="mascota">Nombre de la Mascota</label>
+            <input
+              id="mascota"
+              type="text"
+              placeholder="Nombre de Mascota"
+              .value=${this.mascota.nombre}
+              @input=${(e) => this.handleFieldChange(e, "nombre")}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="propietario">Propietario</label>
+            <input
+              id="propietario"
+              type="text"
+              placeholder="Propietario"
+              .value=${this.mascota.propietario}
+              @input=${(e) => this.handleFieldChange(e, "propietario")}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="email">Email</label>
+            <input
+              id="email"
+              type="email"
+              placeholder="Email"
+              .value=${this.mascota.email}
+              @input=${(e) => this.handleFieldChange(e, "email")}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="alta">Alta</label>
+            <input
+              id="alta"
+              type="date"
+              .value=${this.mascota.fecha}
+              @input=${(e) => this.handleFieldChange(e, "fecha")}
+            />
+          </div>
+
+          <div>
+            <label for="sintomas">Síntomas</label>
+            <textarea
+              id="sintomas"
+              cols="30" rows="4"
+              placeholder="Describe los síntomas"
+              .value=${this.mascota.sintomas}
+              @input=${(e) => this.handleFieldChange(e, "sintomas")}
+            ></textarea>
+          </div>
+          </div>
+          <button
+            type="button"
+            @click=${() => {
+              this.setMascota(this.mascota);
+              this.mascota = { nombre: "", propietario: "", email: "", fecha: "", sintomas: "" };
+            }}
+          >
+            Agregar Paciente
+          </button>
         </form>
-    
-        </div>
-        `;
-    }
+      </div>
+    `;
+  }
 
-    handleFieldChange(event, field) {
-        this.mascota = { ...this.mascota, [field]: event.target.value };
-      }
+  handleFieldChange(event, field) {
+    const value = event?.target?.value || '';
+    this.mascota = { ...this.mascota, [field]: value };
+  }
 
-    setMascota(mascota){
-        this.dispatchEvent(new CustomEvent('datos-actualizados', {
-            bubbles: true,
-            composed: true,
-            detail: mascota
-        }));
-    }
+  setMascota(mascota) {
+    this.dispatchEvent(
+      new CustomEvent("datos-actualizados", {
+        bubbles: true,
+        composed: true,
+        detail: mascota,
+      })
+    );
+  }
 }
 
 customElements.define("form-component", FormComponent);
-
-//Aqui utilizar conectedCallBack(){}(cuando se inicia el componente)
-/* useEffect( () => {
-    if( Object.keys(paciente).length > 0 ){
-        setNombre(paciente.nombre)
-        setPropietario(paciente.propietario)
-        setEmail(paciente.email)
-        setFecha(paciente.fecha)
-        setSintomas(paciente.sintomas)
-    }
-}, [paciente]) */
