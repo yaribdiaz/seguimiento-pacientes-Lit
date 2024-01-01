@@ -2,13 +2,63 @@ import { LitElement, html, css } from "lit";
 import "./components/cita-paciente"
 import "./components/form-component"
 import "./components/header-citas"
+import "./components/cita-paciente"
 
 export class SeguimientoCitas extends LitElement{
 
     static styles = css `
-        .seguimiento {
+        .container{
+            
+        }
+        main {
             display: flex;
-            justify-content: space-around;
+            flex-direction: column;
+            padding-inline: 1.2rem;
+            height: 100%;
+        }
+        .seguimiento {
+            width:100%;
+        }
+        .listado {
+            padding-inline: 10px;
+            overflow-y: scroll;
+            width: 100%;
+            margin-top: 5rem;
+        }
+        .listado::-webkit-scrollbar {
+            background: #e1e1e1;
+            border-radius: 10px;
+            width: 11px;
+        }
+        .listado::-webkit-scrollbar-thumb{
+            background-color: #9ca3af;
+            border-radius: 15px;
+        }
+        @media (min-width: 540px) { 
+            main{
+                flex-direction: row;
+                height: 78vh;
+                justify-content:space-between;
+            }
+            .listado {
+                margin-top: 0px;
+            }
+            .seguimiento {
+                width:40%;
+            }
+            .listado {
+                width: 55%;
+            }
+        }
+        @media (min-width: 768px) { 
+            main{
+                padding-inline: 1.2rem;
+            }
+        }
+        @media (min-width: 1024px) { 
+            main{
+                padding-inline: 4rem;
+            }
         }
     `
 
@@ -39,14 +89,17 @@ export class SeguimientoCitas extends LitElement{
     render(){
         console.log("Renderizado de seguimiento de citas");
         return html `
+        <div class="container">
         <header-citas></header-citas>
-        <div class="seguimiento">
-        <div>
-        <form-component .textoBoton=${this.banderaEditar ? "Editar" : "Enviar"} .mascota=${this.mascota}></form-component>
-        </div>
-        <div>
-        <cita-paciente .pacientes=${this.pacientes}></cita-paciente>
-        </div>
+            <main>
+                <div class="seguimiento">
+                    <form-component .textoBoton=${this.banderaEditar ? "Editar" : "Enviar"} .mascota=${this.mascota}></form-component>
+                </div>
+                <div class="listado">
+                <!-- <cita-paciente .pacientes=${this.pacientes}></cita-paciente> -->
+                <cita-paciente .pacientes=${['d','d','d']}></cita-paciente>
+                </div>
+            </main>
         </div>
         `;
     }

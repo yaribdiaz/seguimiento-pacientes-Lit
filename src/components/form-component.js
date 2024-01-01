@@ -7,7 +7,6 @@ class FormComponent extends LitElement {
     :host {
       display: block;
     }
-
     h2 {
       font-weight: bold;
       font-size: 1.5rem;
@@ -22,11 +21,11 @@ class FormComponent extends LitElement {
 
     form {
         background-color: white;
-   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-   border-radius: 1.5rem;
-   padding-top: 2.5rem;
-   padding-left: 1.25rem;
-   padding-right: 1.25rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    border-radius: 1.5rem;
+    padding-top: 2.5rem;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
     }
 
     div {
