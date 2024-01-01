@@ -1,6 +1,7 @@
 import { LitElement, html, css } from "lit";
 import "./components/cita-paciente"
 import "./components/form-component"
+import "./components/header-citas"
 
 export class SeguimientoCitas extends LitElement{
 
@@ -38,6 +39,7 @@ export class SeguimientoCitas extends LitElement{
     render(){
         console.log("Renderizado de seguimiento de citas");
         return html `
+        <header-citas></header-citas>
         <div class="seguimiento">
         <div>
         <form-component .textoBoton=${this.banderaEditar ? "Editar" : "Enviar"} .mascota=${this.mascota}></form-component>
