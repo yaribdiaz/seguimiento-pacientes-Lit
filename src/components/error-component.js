@@ -30,6 +30,7 @@ export class ErrorComponent extends LitElement {
     }
 
     render() {
+        console.log("rederizado error-component");
         return html`
         <p>${this.message}</p>
         `;

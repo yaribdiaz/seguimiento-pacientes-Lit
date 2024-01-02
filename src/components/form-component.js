@@ -71,15 +71,18 @@ button:hover {
   static properties = {
     mascota: {},
     error: { type: Boolean },
+    textoBoton: {}
   };
 
   constructor() {
     super();
     this.mascota = { nombre: "", propietario: "", email: "", fecha: "", sintomas: "" };
     this.error = false;
+    this.textoBoton = "Agregar Paciente";
   }
 
   render() {
+    console.log("renderizado form");
     return html`
       <div>
         <h2>Seguimiento Pacientes</h2>
@@ -87,7 +90,7 @@ button:hover {
         <form>
           ${when(
             this.error,
-            () => html`<error-component mensaje="Todos los campos son obligatorios" />`,
+            () => html`<error-component .message=${"Todos los campos son obligatorios"} />`,
             () => nothing
           )}
           <div>
@@ -151,7 +154,7 @@ button:hover {
               this.mascota = { nombre: "", propietario: "", email: "", fecha: "", sintomas: "" };
             }}
           >
-            Agregar Paciente
+            ${this.textoBoton}
           </button>
         </form>
       </div>
@@ -164,13 +167,26 @@ button:hover {
   }
 
   setMascota(mascota) {
-    this.dispatchEvent(
-      new CustomEvent("datos-actualizados", {
-        bubbles: true,
-        composed: true,
-        detail: mascota,
-      })
-    );
+    let continuar = true;
+    for (let e in mascota){
+      if(!(mascota[e].length > 2)){
+        continuar = false;
+      }
+    }
+
+    if(continuar){
+      this.error = false;
+      this.dispatchEvent(
+        new CustomEvent("datos-actualizados", {
+          bubbles: true,
+          composed: true,
+          detail: mascota,
+        })
+      );
+    } else {
+      this.error = true;
+    }
+    
   }
 }
 

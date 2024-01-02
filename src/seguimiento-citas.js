@@ -93,11 +93,10 @@ export class SeguimientoCitas extends LitElement{
         <header-citas></header-citas>
             <main>
                 <div class="seguimiento">
-                    <form-component .textoBoton=${this.banderaEditar ? "Editar" : "Enviar"} .mascota=${this.mascota}></form-component>
+                    <form-component .textoBoton=${this.banderaEditar ? "Editar Paciente" : "Agregar paciente"} .mascota=${this.mascota}></form-component>
                 </div>
                 <div class="listado">
-                <!-- <cita-paciente .pacientes=${this.pacientes}></cita-paciente> -->
-                <cita-paciente .pacientes=${['d','d','d']}></cita-paciente>
+                <cita-paciente .pacientes=${this.pacientes}></cita-paciente>
                 </div>
             </main>
         </div>
