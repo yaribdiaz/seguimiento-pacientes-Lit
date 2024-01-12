@@ -89,9 +89,9 @@ export class SeguimientoCitas extends LitElement{
     render(){
         console.log("Renderizado de seguimiento de citas");
         return html `
-        <div class="container">
-        <header-citas></header-citas>
-            <main>
+        <div>
+            <header-citas></header-citas>
+            <main  class="container">
                 <div class="seguimiento">
                     <form-component .textoBoton=${this.banderaEditar ? "Editar Paciente" : "Agregar paciente"} .mascota=${this.mascota}></form-component>
                 </div>
@@ -117,7 +117,7 @@ export class SeguimientoCitas extends LitElement{
                 headers: myHeaders
             };
 
-            await fetch(`http://localhost:8080/api-citas/${datos.id}`, requestOptions)
+            await fetch(`https://seguimiento-citas.onrender.com/api-citas/${datos.id}`, requestOptions)
                 .then(response => response.json())
                 .catch(error => console.log('error', error));
             this.getData();
@@ -138,7 +138,7 @@ export class SeguimientoCitas extends LitElement{
                 headers: myHeaders
             };
 
-            await fetch("http://localhost:8080/api-citas", requestOptions)
+            await fetch("https://seguimiento-citas.onrender.com/api-citas", requestOptions)
                 .then(response => response.json())
                 .catch(error => console.log('error', error));
             this.getData();
@@ -146,7 +146,8 @@ export class SeguimientoCitas extends LitElement{
     }
 
     async getData(){
-        const result = await fetch("http://localhost:8080/api-citas", {method: 'GET'})
+        console.log('get data')
+        const result = await fetch("https://seguimiento-citas.onrender.com/api-citas", {method: 'GET'})
         .then(response => response.json())
         .catch(error => console.log('error', error));
         this.pacientes = [...result];

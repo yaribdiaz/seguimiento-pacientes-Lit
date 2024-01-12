@@ -1,9 +1,11 @@
 import { LitElement, html, css } from "lit";
 import {map} from 'lit/directives/map.js';
+import { ModalComponent } from "./modal-component";
 
 export class CitaPaciente extends LitElement {
     static properties = {
-        pacientes: { type: Array }
+        pacientes: { type: Array, reflect: true },
+        modal: { type: Boolean }
     }
 
     static styles = css `
@@ -58,17 +60,18 @@ export class CitaPaciente extends LitElement {
             padding: 30px;
         }
     `;
-
+        
     constructor(){
         super();
         this.pacientes = [];
+        this.modal = false;
     }
-
+    paciente;
     render(){
         console.log("renderizado cita-paciente");
         return html `
-        
-        <h2>Listado Pacientes</h2>
+        <modal-component ?modal=${this.modal} .paciente=${this.paciente} .deletePaciente=${this.deletePaciente} .closeModal=${this.closeModal.bind(this)} ></modal-component>
+        <h2>Listado Pacientes ${this.modal}</h2>
         <p class="descripcion">
             Administra tus 
             <span>Pacientes y Citas</span>
@@ -94,7 +97,10 @@ export class CitaPaciente extends LitElement {
                 <div class="buttons">
 
                         <button type="button"
-                        @click=${() => this.deletePaciente(paciente.id)}
+                            @click=${() => {
+                                this.showModal();
+                                this.paciente = paciente.id;
+                            }}
                         >
                             Eliminar
                         </button>
@@ -112,20 +118,30 @@ export class CitaPaciente extends LitElement {
         (paciente) => paciente.id
  )}
         </div>
+        
         `
 }
 
-async deletePaciente(id){
 
-    await fetch(`http://localhost:8080/api-citas/${id}`, {
+showModal(){
+    this.modal = true;
+}
+closeModal(){
+    this.modal = false;
+}
+async deletePaciente(id) {
+    this.closeModal();
+    console.log('eliminando', id)
+    await fetch(`https://seguimiento-citas.onrender.com/api-citas/${id}`, {
         method: 'DELETE',
     })
         .then(response => response.json())
         .catch(error => console.log('error', error));
 
-    this.pacientes = await fetch("http://localhost:8080/api-citas", {method: 'GET'})
+    this.pacientes = await fetch("https://seguimiento-citas.onrender.com/api-citas", {method: 'GET'})
     .then(response => response.json())
     .catch(error => console.log('error', error));
+    this.paciente = null;
 }
 
 setPaciente(id){
